@@ -1,0 +1,12 @@
+# Mac OS
+.DS_Store
+
+# IDE
+.idea
+*.iml
+
+# Maven
+target/
+
+# Private Files
+profile-*.properties
