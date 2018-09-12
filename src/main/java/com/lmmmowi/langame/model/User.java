@@ -13,6 +13,11 @@ public class User extends BaseModel<User> {
 
     public static final User DAO = new User();
 
+    @Override
+    public Integer getId() {
+        return super.getId();
+    }
+
     public boolean matchPassword(String raw) {
         String password = saltPassword(raw);
         return password.equals(this.getStr("password"));

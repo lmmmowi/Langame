@@ -9,7 +9,11 @@ import com.jfinal.plugin.activerecord.Model;
  */
 public class BaseModel<M extends BaseModel> extends Model<M> {
 
-    protected String getTable() {
+    public String getTable() {
         return super._getTable().getName();
+    }
+
+    public <T> T getId() {
+        return get("id");
     }
 }

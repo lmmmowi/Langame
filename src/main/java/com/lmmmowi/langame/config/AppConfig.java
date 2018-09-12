@@ -5,8 +5,12 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.lmmmowi.langame.interceptor.ApiResultOutput;
+import com.lmmmowi.langame.interceptor.UserAuthorization;
+import com.lmmmowi.langame.plugin.spring.IocInterceptor;
+import com.lmmmowi.langame.plugin.spring.SpringPlugin;
 import com.lmmmowi.langame.routes.ApiRoutes;
-import com.lmmmowi.langame.model.ModelMapping;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @Author: mowi
@@ -18,6 +22,10 @@ public class AppConfig extends JFinalConfig {
     public AppConfig() {
         LangameConfig.getInstance().init();
         loadPropertyFile(LangameConfig.ConfigFileName);
+    }
+
+    private void initSpring() {
+
     }
 
     @Override
@@ -38,6 +46,9 @@ public class AppConfig extends JFinalConfig {
 
     @Override
     public void configPlugin(Plugins plugins) {
+        SpringPlugin springPlugin = new SpringPlugin(new ClassPathXmlApplicationContext("spring/application-context.xml"));
+        plugins.add(springPlugin);
+
         DruidPlugin druidPlugin = new DruidPlugin(getProperty("db.url"), getProperty("db.username"), getProperty("db.password"));
         druidPlugin.setMaxActive(getPropertyToInt("db.max_connections"));
         plugins.add(druidPlugin);
@@ -50,6 +61,8 @@ public class AppConfig extends JFinalConfig {
     @Override
     public void configInterceptor(Interceptors interceptors) {
         interceptors.addGlobalActionInterceptor(new ApiResultOutput());
+        interceptors.addGlobalActionInterceptor(new UserAuthorization());
+        interceptors.addGlobalActionInterceptor(new IocInterceptor());
     }
 
     @Override

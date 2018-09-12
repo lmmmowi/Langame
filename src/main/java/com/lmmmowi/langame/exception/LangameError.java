@@ -5,7 +5,7 @@ package com.lmmmowi.langame.exception;
  * @Date: 2018/9/11
  * @Description:
  */
-public interface LangicError {
+public interface LangameError {
 
     int getCode();
 

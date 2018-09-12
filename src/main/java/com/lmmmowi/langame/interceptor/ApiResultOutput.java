@@ -5,7 +5,7 @@ import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
 import com.lmmmowi.langame.common.BaseApi;
-import com.lmmmowi.langame.exception.LangicException;
+import com.lmmmowi.langame.exception.LangameException;
 
 import java.util.Enumeration;
 
@@ -41,9 +41,20 @@ public class ApiResultOutput implements Interceptor {
         // 错误码
         int code = DEFAULT_SUCCESS_CODE;
         if (e != null) {
-            code = (e instanceof LangicException) ? ((LangicException) e).getCode() : DEFAULT_ERROR_CODE;
+            String errorMessage;
+            if (e instanceof LangameException) {
+                LangameException le = (LangameException) e;
+                code = le.getCode();
+                errorMessage = le.getErrorMessage();
+            } else {
+                code = DEFAULT_ERROR_CODE;
+                errorMessage = e.getMessage();
+                if (errorMessage == null && e.getCause() != null) {
+                    errorMessage = e.getCause().getMessage();
+                }
 
-            String errorMessage = (e instanceof LangicException) ? ((LangicException) e).getErrorMessage() : e.getMessage();
+                e.printStackTrace();
+            }
             result.set("error", errorMessage);
         }
         result.set("code", code);

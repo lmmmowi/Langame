@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.StrKit;
+import com.lmmmowi.langame.model.User;
 
 /**
  * @Author: mowi
@@ -18,6 +19,8 @@ public class BaseApi extends Controller {
 
     private boolean inputJsonCached;
     private JSONObject cacheInputJson;
+
+    protected User accessUser;
 
     protected String getInputData() {
         if (!inputDataCached) {
@@ -64,5 +67,9 @@ public class BaseApi extends Controller {
             String s = getInputJson().getString(name);
             return s != null ? s : defaultValue;
         }
+    }
+
+    public void setAccessUser(User accessUser) {
+        this.accessUser = accessUser;
     }
 }
