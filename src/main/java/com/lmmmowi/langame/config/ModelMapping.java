@@ -1,6 +1,8 @@
 package com.lmmmowi.langame.config;
 
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.template.source.ClassPathSourceFactory;
+import com.lmmmowi.langame.common.BaseModel;
 import com.lmmmowi.langame.model.*;
 
 /**
@@ -16,6 +18,14 @@ public class ModelMapping {
         arp.addMapping("lg_member", "project,user", Member.class);
         arp.addMapping("lg_path_node", "id", PathNode.class);
         arp.addMapping("lg_lang_entry", "path_node,language", LangEntry.class);
+
+        arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
+        arp.addSqlTemplate(getModelSql(PathNode.class));
+
+        arp.setShowSql(true);
     }
 
+    private static String getModelSql(Class<? extends BaseModel> modelClz) {
+        return modelClz.getName().replace(".", "/") + ".sql";
+    }
 }

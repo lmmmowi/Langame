@@ -1,10 +1,12 @@
 package com.lmmmowi.langame.common;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.StrKit;
+import com.jfinal.plugin.activerecord.Page;
 import com.lmmmowi.langame.model.User;
 
 /**
@@ -69,7 +71,47 @@ public class BaseApi extends Controller {
         }
     }
 
+    @Override
+    public Integer getParaToInt(String name) {
+        return this.getParaToInt(name, null);
+    }
+
+    @Override
+    public Integer getParaToInt(String name, Integer defaultValue) {
+        String s = this.getPara(name);
+        return StrKit.isBlank(s) ? defaultValue : Integer.valueOf(s);
+    }
+
+    @Override
+    public Boolean getParaToBoolean(String name) {
+        return this.getParaToBoolean(name, null);
+    }
+
+    @Override
+    public Boolean getParaToBoolean(String name, Boolean defaultValue) {
+        String s = this.getPara(name);
+        return StrKit.isBlank(s) ? defaultValue : Boolean.valueOf(s);
+    }
+
+    public JSONArray getParaToJSONArray(String name) {
+        String s = this.getPara(name);
+        return JSONArray.parseArray(s);
+    }
+
+    public JSONObject getParaToJSONObject(String name) {
+        String s = this.getPara(name);
+        return JSONObject.parseObject(s);
+    }
+
     public void setAccessUser(User accessUser) {
         this.accessUser = accessUser;
+    }
+
+    protected void setPageAttr(Page page) {
+        setAttr("list", page.getList());
+        setAttr("page_number", page.getPageNumber());
+        setAttr("page_size", page.getPageSize());
+        setAttr("total_size", page.getTotalRow());
+        setAttr("total_page", page.getTotalPage());
     }
 }

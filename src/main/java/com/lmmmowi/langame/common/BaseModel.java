@@ -1,6 +1,9 @@
 package com.lmmmowi.langame.common;
 
 import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.SqlPara;
+
+import java.util.Map;
 
 /**
  * @Author: mowi
@@ -15,5 +18,20 @@ public class BaseModel<M extends BaseModel> extends Model<M> {
 
     public <T> T getId() {
         return get("id");
+    }
+
+    public SqlPara getModelSqlPara(String key, Map data) {
+        key = getClass().getName() + "." + key;
+        return this._getConfig().getSqlKit().getSqlPara(key, data);
+    }
+
+    public SqlPara getModelSqlPara(String key, Model model) {
+        key = getClass().getName() + "." + key;
+        return super.getSqlPara(key, model);
+    }
+
+    public SqlPara getModelSqlPara(String key, Object... paras) {
+        key = getClass().getName() + "." + key;
+        return super.getSqlPara(key, paras);
     }
 }

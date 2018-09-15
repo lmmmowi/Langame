@@ -8,4 +8,8 @@ package com.lmmmowi.langame.common;
 public interface ApiHeaders {
 
     String HEADER_USER_TOKEN = "LG-USER-TOKEN";
+
+    String[] ALL = new String[]{
+            HEADER_USER_TOKEN
+    };
 }

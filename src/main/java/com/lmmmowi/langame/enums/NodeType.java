@@ -13,4 +13,11 @@ public enum NodeType {
     // 词条节点
     entry;
 
+    public static NodeType parse(String s) {
+        try {
+            return valueOf(s);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
