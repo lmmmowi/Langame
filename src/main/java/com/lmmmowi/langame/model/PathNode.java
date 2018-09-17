@@ -26,6 +26,10 @@ public class PathNode extends BaseModel<PathNode> {
         return ROOT_NODE_ID.equals(getInt("parent"));
     }
 
+    public String getProjectId(){
+        return getStr("project");
+    }
+
     public NodeType getType(){
         return NodeType.valueOf(getStr("type"));
     }
@@ -38,6 +42,11 @@ public class PathNode extends BaseModel<PathNode> {
     public List<PathNode> findByParent(Integer nodeId) {
         String sql = String.format("SELECT * FROM %s WHERE parent=? ORDER BY type DESC, name", getTable());
         return find(sql, nodeId);
+    }
+
+    public List<PathNode> findByProject(String projectId) {
+        String sql = String.format("SELECT * FROM %s WHERE project=?", getTable());
+        return find(sql, projectId);
     }
 
     public Page<PathNode> findByParent(Integer nodeId, int pageNumber, int pageSize) {

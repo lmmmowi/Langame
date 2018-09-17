@@ -34,4 +34,12 @@ public class BaseModel<M extends BaseModel> extends Model<M> {
         key = getClass().getName() + "." + key;
         return super.getSqlPara(key, paras);
     }
+
+    @Override
+    public M set(String attr, Object value) {
+        if (!_getTable().hasColumnLabel(attr)) {
+            return super.put(attr, value);
+        }
+        return super.set(attr, value);
+    }
 }

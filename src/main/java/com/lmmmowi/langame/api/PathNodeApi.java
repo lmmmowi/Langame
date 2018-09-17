@@ -2,15 +2,18 @@ package com.lmmmowi.langame.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.plugin.activerecord.Page;
+import com.lmmmowi.langame.cache.LgCache;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.enums.NodeType;
 import com.lmmmowi.langame.exception.pathnode.PathNodeNotFound;
+import com.lmmmowi.langame.helper.PathNodeHelper;
 import com.lmmmowi.langame.model.PathNode;
 import com.lmmmowi.langame.service.PathNodeService;
 import com.lmmmowi.langame.vo.PathNodeQueryCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: mowi
@@ -38,13 +41,15 @@ public class PathNodeApi extends BaseApi {
         setAttr("node", pathNode);
     }
 
-    public void getNode(){
+    public void getNode() {
         Integer nodeId = getParaToInt("id");
         PathNode pathNode = PathNode.DAO.findById(nodeId);
         if (pathNode == null) {
             throw new PathNodeNotFound();
         }
 
+        Map<Integer, String> completePathMap = LgCache.use(pathNode.getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
+        pathNode.set("complete_path", completePathMap.get(pathNode.getId()));
         setAttr("node", pathNode);
     }
 
@@ -98,6 +103,13 @@ public class PathNodeApi extends BaseApi {
         queryCondition.setRecursion(getParaToBoolean("recursion", false));
 
         Page<PathNode> pathNodePage = pathNodeService.query(queryCondition, pageNumber, pageSize);
+
+        List<PathNode> pathNodes = pathNodePage.getList();
+        if (pathNodes != null && !pathNodes.isEmpty()) {
+            Map<Integer, String> completePathMap = LgCache.use(pathNodes.get(0).getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
+            pathNodes.forEach(node -> node.set("complete_path", completePathMap.get(node.getId())));
+        }
+
         setPageAttr(pathNodePage);
     }
 }
