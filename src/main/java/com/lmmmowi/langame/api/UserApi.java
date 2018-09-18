@@ -1,6 +1,7 @@
 package com.lmmmowi.langame.api;
 
 import com.lmmmowi.langame.common.BaseApi;
+import com.lmmmowi.langame.common.RequireSignin;
 import com.lmmmowi.langame.helper.UserTokenHelper;
 import com.lmmmowi.langame.model.User;
 import com.lmmmowi.langame.service.UserService;
@@ -34,4 +35,8 @@ public class UserApi extends BaseApi {
         setAttr("token", UserTokenHelper.getDefault().generate(user));
     }
 
+    @RequireSignin
+    public void getUser() {
+        setAttr("user", accessUser);
+    }
 }

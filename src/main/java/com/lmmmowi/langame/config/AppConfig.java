@@ -6,6 +6,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.lmmmowi.langame.interceptor.ApiResultOutput;
 import com.lmmmowi.langame.interceptor.CrossDomain;
+import com.lmmmowi.langame.interceptor.HttpOptionsMethodFilter;
 import com.lmmmowi.langame.interceptor.UserAuthorization;
 import com.lmmmowi.langame.plugin.spring.IocInterceptor;
 import com.lmmmowi.langame.plugin.spring.SpringPlugin;
@@ -62,6 +63,7 @@ public class AppConfig extends JFinalConfig {
     @Override
     public void configInterceptor(Interceptors interceptors) {
         interceptors.addGlobalActionInterceptor(new CrossDomain());
+        interceptors.addGlobalActionInterceptor(new HttpOptionsMethodFilter());
         interceptors.addGlobalActionInterceptor(new ApiResultOutput());
         interceptors.addGlobalActionInterceptor(new UserAuthorization());
         interceptors.addGlobalActionInterceptor(new IocInterceptor());

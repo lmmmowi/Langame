@@ -49,6 +49,11 @@ public class PathNode extends BaseModel<PathNode> {
         return find(sql, projectId);
     }
 
+    public PathNode findProjectRootNode(String projectId) {
+        String sql = String.format("SELECT * FROM %s WHERE project=? AND parent=0", getTable());
+        return findFirst(sql, projectId);
+    }
+
     public Page<PathNode> findByParent(Integer nodeId, int pageNumber, int pageSize) {
         String sql = String.format("FROM %s WHERE parent=? ORDER BY type DESC, name", getTable());
         return paginate(pageNumber, pageSize, "SELECT *", sql, nodeId);

@@ -25,12 +25,14 @@ public class UserAuthorization implements Interceptor {
             User accessUser = null;
 
             String token = controller.getRequest().getHeader(ApiHeaders.HEADER_USER_TOKEN);
+            System.out.println(token);
             if (token != null) {
                 Integer userId = UserTokenHelper.getDefault().verify(token);
                 accessUser = User.DAO.findById(userId);
             }
 
             if (accessUser != null) {
+                accessUser.remove("password");
                 api.setAccessUser(accessUser);
             } else {
                 RequireSignin annotation = invocation.getMethod().getAnnotation(RequireSignin.class);

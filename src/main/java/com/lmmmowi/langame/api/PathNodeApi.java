@@ -53,6 +53,18 @@ public class PathNodeApi extends BaseApi {
         setAttr("node", pathNode);
     }
 
+    public void getProjectRootNode(){
+        String projectId = getPara("project_id");
+        PathNode pathNode = PathNode.DAO.findProjectRootNode(projectId);
+        if (pathNode == null) {
+            throw new PathNodeNotFound();
+        }
+
+        Map<Integer, String> completePathMap = LgCache.use(pathNode.getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
+        pathNode.set("complete_path", completePathMap.get(pathNode.getId()));
+        setAttr("node", pathNode);
+    }
+
     public void rename() {
         Integer nodeId = getParaToInt("id");
         String name = getPara("name");
