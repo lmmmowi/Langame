@@ -1,8 +1,7 @@
 package com.lmmmowi.langame.service;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.lmmmowi.langame.model.Member;
-import com.lmmmowi.langame.model.Project;
-import com.lmmmowi.langame.model.User;
 
 /**
  * @Author: mowi
@@ -11,6 +10,8 @@ import com.lmmmowi.langame.model.User;
  */
 public interface MemberService {
 
-    Member addMember(Project project, User user);
+    Member addMember(String projectId, Integer userId);
+
+    Page<Member> getMemberList(String projectId, Integer pageSize, Integer pageNumber);
 
 }

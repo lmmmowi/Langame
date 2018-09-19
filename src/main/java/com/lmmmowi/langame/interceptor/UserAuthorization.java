@@ -6,6 +6,7 @@ import com.jfinal.core.Controller;
 import com.lmmmowi.langame.common.ApiHeaders;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.common.RequireSignin;
+import com.lmmmowi.langame.exception.user.RequireSigninException;
 import com.lmmmowi.langame.helper.UserTokenHelper;
 import com.lmmmowi.langame.model.User;
 
@@ -37,7 +38,7 @@ public class UserAuthorization implements Interceptor {
             } else {
                 RequireSignin annotation = invocation.getMethod().getAnnotation(RequireSignin.class);
                 if (annotation != null){
-                    throw new com.lmmmowi.langame.exception.user.RequireSignin();
+                    throw new RequireSigninException();
                 }
             }
         }

@@ -36,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
         Db.tx(() -> {
             project.save();
             pathNodeService.createRootNode(project);
-            memberService.addMember(project, user);
+            memberService.addMember(project.getId(), user.getId());
             return true;
         });
 

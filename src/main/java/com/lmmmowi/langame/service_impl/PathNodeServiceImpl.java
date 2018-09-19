@@ -4,8 +4,8 @@ import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.SqlPara;
 import com.lmmmowi.langame.enums.NodeType;
-import com.lmmmowi.langame.exception.pathnode.DuplicatedPathNode;
-import com.lmmmowi.langame.exception.pathnode.PathNodeNotFound;
+import com.lmmmowi.langame.exception.pathnode.DuplicatedPathNodeException;
+import com.lmmmowi.langame.exception.pathnode.PathNodeNotFoundException;
 import com.lmmmowi.langame.helper.PathNodeHelper;
 import com.lmmmowi.langame.model.PathNode;
 import com.lmmmowi.langame.model.Project;
@@ -43,13 +43,13 @@ public class PathNodeServiceImpl implements PathNodeService {
     @Override
     public PathNode createNode(PathNode parentNode, String name, NodeType nodeType) {
         if (parentNode == null) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         Integer parentNodeId = parentNode.getId();
         PathNode pathNode = PathNode.DAO.findNode(parentNodeId, name, nodeType);
         if (pathNode != null) {
-            throw new DuplicatedPathNode();
+            throw new DuplicatedPathNodeException();
         }
 
         pathNode = new PathNode();
@@ -70,12 +70,12 @@ public class PathNodeServiceImpl implements PathNodeService {
     @Override
     public PathNode rename(PathNode pathNode, String name) {
         if (pathNode == null || pathNode.isRootNode()) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         PathNode existNode = PathNode.DAO.findNode(pathNode.get("parent"), pathNode.get("name"), pathNode.getType());
         if (existNode != null && !existNode.getId().equals(pathNode.getId())) {
-            throw new DuplicatedPathNode();
+            throw new DuplicatedPathNodeException();
         }
 
         pathNode.set("name", name);

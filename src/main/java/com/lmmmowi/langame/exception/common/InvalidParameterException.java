@@ -7,7 +7,7 @@ import com.lmmmowi.langame.exception.LangameException;
  * @Date: 2018/9/11
  * @Description:
  */
-public class InvalidParameter extends LangameException {
+public class InvalidParameterException extends LangameException {
 
     @Override
     public int getCode() {

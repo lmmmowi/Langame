@@ -7,10 +7,11 @@ import com.lmmmowi.langame.exception.LangameException;
  * @Date: 2018/9/11
  * @Description:
  */
-public class RequireSignin extends LangameException {
+public class InvalidPasswordException extends LangameException {
 
     @Override
     public int getCode() {
-        return 1000;
+        return 1003;
     }
+
 }

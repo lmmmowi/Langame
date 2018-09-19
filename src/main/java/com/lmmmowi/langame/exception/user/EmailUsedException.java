@@ -7,11 +7,11 @@ import com.lmmmowi.langame.exception.LangameException;
  * @Date: 2018/9/11
  * @Description:
  */
-public class InvalidPassword extends LangameException {
+public class EmailUsedException extends LangameException {
 
     @Override
     public int getCode() {
-        return 1003;
+        return 1002;
     }
 
 }

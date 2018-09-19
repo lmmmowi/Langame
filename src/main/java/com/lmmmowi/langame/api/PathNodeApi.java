@@ -5,8 +5,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.lmmmowi.langame.cache.LgCache;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.enums.NodeType;
-import com.lmmmowi.langame.exception.pathnode.PathNodeNotFound;
-import com.lmmmowi.langame.helper.PathNodeHelper;
+import com.lmmmowi.langame.exception.pathnode.PathNodeNotFoundException;
 import com.lmmmowi.langame.model.PathNode;
 import com.lmmmowi.langame.service.PathNodeService;
 import com.lmmmowi.langame.vo.PathNodeQueryCondition;
@@ -45,7 +44,7 @@ public class PathNodeApi extends BaseApi {
         Integer nodeId = getParaToInt("id");
         PathNode pathNode = PathNode.DAO.findById(nodeId);
         if (pathNode == null) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         Map<Integer, String> completePathMap = LgCache.use(pathNode.getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
@@ -57,7 +56,7 @@ public class PathNodeApi extends BaseApi {
         String projectId = getPara("project_id");
         PathNode pathNode = PathNode.DAO.findProjectRootNode(projectId);
         if (pathNode == null) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         Map<Integer, String> completePathMap = LgCache.use(pathNode.getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
@@ -80,7 +79,7 @@ public class PathNodeApi extends BaseApi {
 
         PathNode pathNode = PathNode.DAO.findById(nodeId);
         if (pathNode == null) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         pathNode = pathNodeService.rename(nodeId, name);
