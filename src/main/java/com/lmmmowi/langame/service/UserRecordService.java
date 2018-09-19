@@ -15,7 +15,7 @@ public interface UserRecordService {
     String ADD_WORDS = "添加了词条";
     String UPDATE_WORDS = "更新了词条";
 
-    void addRecord(String projectId, int userId,String recordType);
+    void addRecord(String projectId, int userId,String recordType,String content);
 
     Page<UserRecord> getUserRecordList(String projectId, Integer pageSize, Integer pageNumber);
 }

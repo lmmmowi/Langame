@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRecordServiceImpl implements UserRecordService {
     @Override
-    public void addRecord(String projectId, int userId, String recordType) {
+    public void addRecord(String projectId, int userId, String recordType,String content) {
         User user = User.DAO.findById(userId);
         UserRecord userRecord = new UserRecord();
         userRecord.set("project_id", projectId);
         userRecord.set("nickname", user.getStr("nickname"));
-        userRecord.set("content", recordType);
+        userRecord.set("content", recordType+" "+content);
         userRecord.save();
     }
 

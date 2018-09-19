@@ -43,7 +43,7 @@ public class ProjectServiceImpl implements ProjectService {
             memberService.addMember(project.getId(), user.getId());
             return true;
         });
-        userRecordService.addRecord(project.getId(), user.getId(), UserRecordService.NEW_PROJECT);
+        userRecordService.addRecord(project.getId(), user.getId(), UserRecordService.NEW_PROJECT,name);
         return project;
     }
 

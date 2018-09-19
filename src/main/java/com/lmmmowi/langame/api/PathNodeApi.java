@@ -39,7 +39,7 @@ public class PathNodeApi extends BaseApi {
         Integer parentNodeId = getParaToInt("parent");
         String name = getPara("name");
         PathNode pathNode = pathNodeService.createNode(parentNodeId, name, NodeType.entry);
-        userRecordService.addRecord(pathNode.getProjectId(),accessUser.getId(),UserRecordService.ADD_WORDS);
+        userRecordService.addRecord(pathNode.getProjectId(),accessUser.getId(),UserRecordService.ADD_WORDS,name);
         setAttr("node", pathNode);
     }
 
@@ -84,7 +84,7 @@ public class PathNodeApi extends BaseApi {
         if (pathNode == null) {
             throw new PathNodeNotFoundException();
         }
-        userRecordService.addRecord(pathNode.getProjectId(),accessUser.getId(),UserRecordService.UPDATE_WORDS);
+        userRecordService.addRecord(pathNode.getProjectId(),accessUser.getId(),UserRecordService.UPDATE_WORDS,name);
         pathNode = pathNodeService.rename(nodeId, name);
         pathNode.set("description", description);
         pathNode.update();
