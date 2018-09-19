@@ -8,6 +8,7 @@ import com.lmmmowi.langame.enums.NodeType;
 import com.lmmmowi.langame.exception.pathnode.PathNodeNotFoundException;
 import com.lmmmowi.langame.model.PathNode;
 import com.lmmmowi.langame.service.PathNodeService;
+import com.lmmmowi.langame.service.UserRecordService;
 import com.lmmmowi.langame.vo.PathNodeQueryCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,7 +23,9 @@ import java.util.Map;
 public class PathNodeApi extends BaseApi {
 
     @Autowired
-    PathNodeService pathNodeService;
+    private PathNodeService pathNodeService;
+    @Autowired
+    private UserRecordService userRecordService;
 
     public void createDir() {
         Integer parentNodeId = getParaToInt("parent");
@@ -35,8 +38,8 @@ public class PathNodeApi extends BaseApi {
     public void createEntry() {
         Integer parentNodeId = getParaToInt("parent");
         String name = getPara("name");
-
         PathNode pathNode = pathNodeService.createNode(parentNodeId, name, NodeType.entry);
+        userRecordService.addRecord(pathNode.getProjectId(),accessUser.getId(),UserRecordService.ADD_WORDS);
         setAttr("node", pathNode);
     }
 
@@ -81,7 +84,7 @@ public class PathNodeApi extends BaseApi {
         if (pathNode == null) {
             throw new PathNodeNotFoundException();
         }
-
+        userRecordService.addRecord(pathNode.getProjectId(),accessUser.getId(),UserRecordService.UPDATE_WORDS);
         pathNode = pathNodeService.rename(nodeId, name);
         pathNode.set("description", description);
         pathNode.update();

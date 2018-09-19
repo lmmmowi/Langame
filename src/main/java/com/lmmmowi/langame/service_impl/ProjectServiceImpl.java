@@ -7,6 +7,7 @@ import com.lmmmowi.langame.model.User;
 import com.lmmmowi.langame.service.MemberService;
 import com.lmmmowi.langame.service.PathNodeService;
 import com.lmmmowi.langame.service.ProjectService;
+import com.lmmmowi.langame.service.UserRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     PathNodeService pathNodeService;
 
+    @Autowired
+    UserRecordService userRecordService;
+
     @Override
     public Project create(User user, String name, String defaultLanguage) {
         Project project = new Project();
@@ -39,7 +43,7 @@ public class ProjectServiceImpl implements ProjectService {
             memberService.addMember(project.getId(), user.getId());
             return true;
         });
-
+        userRecordService.addRecord(project.getId(), user.getId(), UserRecordService.NEW_PROJECT);
         return project;
     }
 

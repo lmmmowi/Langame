@@ -16,13 +16,12 @@ import java.util.List;
 public class ProjectApi extends BaseApi {
 
     @Autowired
-    ProjectService projectService;
+    private ProjectService projectService;
 
     @RequireSignin
     public void create() {
         String name = getPara("name");
         String defaultLanguage = getPara("default_language");
-
         Project project = projectService.create(accessUser, name, defaultLanguage);
         setAttr("project", project);
     }

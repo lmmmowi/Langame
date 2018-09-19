@@ -11,7 +11,6 @@ import com.lmmmowi.langame.interceptor.UserAuthorization;
 import com.lmmmowi.langame.plugin.spring.IocInterceptor;
 import com.lmmmowi.langame.plugin.spring.SpringPlugin;
 import com.lmmmowi.langame.routes.ApiRoutes;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**

@@ -24,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Page<Member> getMemberList(String projectId, Integer pageSize, Integer pageNumber) {
-        String sqlEx = String.format(" FROM %s WHERE app=? AND article_id=? ORDER BY create_time", new Object[]{Member.DAO.getTable()});
+        String sqlEx = String.format(" FROM %s WHERE project=? ORDER BY create_time", new Object[]{Member.DAO.getTable()});
         String sql = "SELECT * ";
         return Member.DAO.paginate(pageNumber.intValue(), pageSize.intValue(), sql, sqlEx, new Object[]{projectId});
     }

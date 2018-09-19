@@ -4,6 +4,7 @@ import com.jfinal.config.Routes;
 import com.lmmmowi.langame.api.PathNodeApi;
 import com.lmmmowi.langame.api.ProjectApi;
 import com.lmmmowi.langame.api.UserApi;
+import com.lmmmowi.langame.api.UserRecordApi;
 
 /**
  * @Author: mowi
@@ -17,5 +18,6 @@ public class ApiRoutes extends Routes {
         add("api/user", UserApi.class);
         add("api/project", ProjectApi.class);
         add("api/node", PathNodeApi.class);
+        add("api/memrecords", UserRecordApi.class);
     }
 }

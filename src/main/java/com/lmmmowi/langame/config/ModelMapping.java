@@ -18,6 +18,7 @@ public class ModelMapping {
         arp.addMapping("lg_member", "project,user", Member.class);
         arp.addMapping("lg_path_node", "id", PathNode.class);
         arp.addMapping("lg_lang_entry", "path_node,language", LangEntry.class);
+        arp.addMapping("lg_record", "id", UserRecord.class);
 
         arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
         arp.addSqlTemplate(getModelSql(PathNode.class));

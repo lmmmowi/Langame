@@ -58,4 +58,5 @@ public class PathNode extends BaseModel<PathNode> {
         String sql = String.format("FROM %s WHERE parent=? ORDER BY type DESC, name", getTable());
         return paginate(pageNumber, pageSize, "SELECT *", sql, nodeId);
     }
+
 }
