@@ -28,4 +28,6 @@ public interface PathNodeService {
     boolean deleteNode(Integer nodeId);
 
     boolean deleteNode(PathNode pathNode);
+
+    int getAllEntry(String projectId);
 }

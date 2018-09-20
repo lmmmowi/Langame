@@ -114,4 +114,10 @@ public class PathNodeApi extends BaseApi {
 
         setPageAttr(pathNodePage);
     }
+
+    public void getAllEntry() {
+        String projectId = getPara("project_id");
+        int allEntry = pathNodeService.getAllEntry(projectId);
+        setAttr("entryCounts", allEntry);
+    }
 }

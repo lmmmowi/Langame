@@ -31,7 +31,6 @@ public class MemberApi extends BaseApi {
         Integer pageNumber = getParaToInt("page_number", 1);
         Integer pageSize = getParaToInt("page_size", 10);
         String projectId = getPara("project_id");
-
         Page<Member> memberPage = memberService.getMembers(projectId, pageNumber, pageSize);
 
         memberPage.getList().forEach(member -> {
