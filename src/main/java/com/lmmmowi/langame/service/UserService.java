@@ -9,7 +9,7 @@ import com.lmmmowi.langame.model.User;
  */
 public interface UserService {
 
-    User signup(String email, String password);
+    User signup(String realname,String email, String password);
 
     User signin(String username, String password);
 

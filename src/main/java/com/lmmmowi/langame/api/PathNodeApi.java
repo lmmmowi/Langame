@@ -5,8 +5,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.lmmmowi.langame.cache.LgCache;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.enums.NodeType;
-import com.lmmmowi.langame.exception.pathnode.PathNodeNotFound;
-import com.lmmmowi.langame.helper.PathNodeHelper;
+import com.lmmmowi.langame.exception.pathnode.PathNodeNotFoundException;
 import com.lmmmowi.langame.model.PathNode;
 import com.lmmmowi.langame.service.PathNodeService;
 import com.lmmmowi.langame.vo.PathNodeQueryCondition;
@@ -23,7 +22,7 @@ import java.util.Map;
 public class PathNodeApi extends BaseApi {
 
     @Autowired
-    PathNodeService pathNodeService;
+    private PathNodeService pathNodeService;
 
     public void createDir() {
         Integer parentNodeId = getParaToInt("parent");
@@ -36,7 +35,6 @@ public class PathNodeApi extends BaseApi {
     public void createEntry() {
         Integer parentNodeId = getParaToInt("parent");
         String name = getPara("name");
-
         PathNode pathNode = pathNodeService.createNode(parentNodeId, name, NodeType.entry);
         setAttr("node", pathNode);
     }
@@ -45,7 +43,7 @@ public class PathNodeApi extends BaseApi {
         Integer nodeId = getParaToInt("id");
         PathNode pathNode = PathNode.DAO.findById(nodeId);
         if (pathNode == null) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         Map<Integer, String> completePathMap = LgCache.use(pathNode.getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
@@ -53,23 +51,15 @@ public class PathNodeApi extends BaseApi {
         setAttr("node", pathNode);
     }
 
-    public void getProjectRootNode(){
+    public void getProjectRootNode() {
         String projectId = getPara("project_id");
         PathNode pathNode = PathNode.DAO.findProjectRootNode(projectId);
         if (pathNode == null) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         Map<Integer, String> completePathMap = LgCache.use(pathNode.getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
         pathNode.set("complete_path", completePathMap.get(pathNode.getId()));
-        setAttr("node", pathNode);
-    }
-
-    public void rename() {
-        Integer nodeId = getParaToInt("id");
-        String name = getPara("name");
-
-        PathNode pathNode = pathNodeService.rename(nodeId, name);
         setAttr("node", pathNode);
     }
 
@@ -80,7 +70,7 @@ public class PathNodeApi extends BaseApi {
 
         PathNode pathNode = PathNode.DAO.findById(nodeId);
         if (pathNode == null) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         pathNode = pathNodeService.rename(nodeId, name);

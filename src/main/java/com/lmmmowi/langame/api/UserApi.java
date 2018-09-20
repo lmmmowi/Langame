@@ -27,10 +27,11 @@ public class UserApi extends BaseApi {
     }
 
     public void signup() {
+        String nickname = getPara("nickname");
         String email = getPara("email");
         String password = getPara("password");
 
-        User user = userService.signup(email, password);
+        User user = userService.signup(nickname, email, password);
         setAttr("user", user);
         setAttr("token", UserTokenHelper.getDefault().generate(user));
     }

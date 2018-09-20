@@ -6,6 +6,7 @@ import com.jfinal.core.Controller;
 import com.lmmmowi.langame.common.ApiHeaders;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.common.RequireSignin;
+import com.lmmmowi.langame.exception.user.RequireSigninException;
 import com.lmmmowi.langame.helper.UserTokenHelper;
 import com.lmmmowi.langame.model.User;
 
@@ -25,7 +26,6 @@ public class UserAuthorization implements Interceptor {
             User accessUser = null;
 
             String token = controller.getRequest().getHeader(ApiHeaders.HEADER_USER_TOKEN);
-            System.out.println(token);
             if (token != null) {
                 Integer userId = UserTokenHelper.getDefault().verify(token);
                 accessUser = User.DAO.findById(userId);
@@ -34,10 +34,12 @@ public class UserAuthorization implements Interceptor {
             if (accessUser != null) {
                 accessUser.remove("password");
                 api.setAccessUser(accessUser);
+
+                ApiContext.get().setAccessUser(accessUser);
             } else {
                 RequireSignin annotation = invocation.getMethod().getAnnotation(RequireSignin.class);
                 if (annotation != null){
-                    throw new com.lmmmowi.langame.exception.user.RequireSignin();
+                    throw new RequireSigninException();
                 }
             }
         }

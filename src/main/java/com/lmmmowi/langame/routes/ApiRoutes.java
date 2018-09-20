@@ -5,7 +5,7 @@ import com.lmmmowi.langame.api.LangEntryApi;
 import com.lmmmowi.langame.api.PathNodeApi;
 import com.lmmmowi.langame.api.ProjectApi;
 import com.lmmmowi.langame.api.UserApi;
-import com.lmmmowi.langame.model.LangEntry;
+import com.lmmmowi.langame.api.*;
 
 /**
  * @Author: mowi
@@ -20,5 +20,7 @@ public class ApiRoutes extends Routes {
         add("api/project", ProjectApi.class);
         add("api/node", PathNodeApi.class);
         add("api/entry", LangEntryApi.class);
+        add("api/member", MemberApi.class);
+        add("api/memrecords", UserRecordApi.class);
     }
 }

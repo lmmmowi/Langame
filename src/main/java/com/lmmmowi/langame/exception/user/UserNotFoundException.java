@@ -7,7 +7,7 @@ import com.lmmmowi.langame.exception.LangameException;
  * @Date: 2018/9/11
  * @Description:
  */
-public class UserNotFound extends LangameException {
+public class UserNotFoundException extends LangameException {
 
     @Override
     public int getCode() {

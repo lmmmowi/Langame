@@ -7,11 +7,10 @@ import com.lmmmowi.langame.exception.LangameException;
  * @Date: 2018/9/11
  * @Description:
  */
-public class EmailUsed extends LangameException {
+public class RequireSigninException extends LangameException {
 
     @Override
     public int getCode() {
-        return 1002;
+        return 1000;
     }
-
 }

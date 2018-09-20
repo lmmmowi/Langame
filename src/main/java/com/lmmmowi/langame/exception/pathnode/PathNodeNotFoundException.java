@@ -7,7 +7,7 @@ import com.lmmmowi.langame.exception.LangameException;
  * @Date: 2018/9/12
  * @Description:
  */
-public class PathNodeNotFound extends LangameException {
+public class PathNodeNotFoundException extends LangameException {
 
     @Override
     public int getCode() {

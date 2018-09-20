@@ -3,14 +3,19 @@ package com.lmmmowi.langame.service_impl;
 import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.SqlPara;
+import com.lmmmowi.langame.bean.action.CreateNodeAction;
+import com.lmmmowi.langame.bean.action.RenameNodeAction;
 import com.lmmmowi.langame.enums.NodeType;
-import com.lmmmowi.langame.exception.pathnode.DuplicatedPathNode;
-import com.lmmmowi.langame.exception.pathnode.PathNodeNotFound;
+import com.lmmmowi.langame.exception.pathnode.DuplicatedPathNodeException;
+import com.lmmmowi.langame.exception.pathnode.PathNodeNotFoundException;
 import com.lmmmowi.langame.helper.PathNodeHelper;
+import com.lmmmowi.langame.interceptor.ApiContext;
 import com.lmmmowi.langame.model.PathNode;
 import com.lmmmowi.langame.model.Project;
+import com.lmmmowi.langame.service.ActionRecordService;
 import com.lmmmowi.langame.service.PathNodeService;
 import com.lmmmowi.langame.vo.PathNodeQueryCondition;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +27,12 @@ import java.util.List;
  */
 @Service
 public class PathNodeServiceImpl implements PathNodeService {
+
+    @Autowired
+    ActionRecordService actionRecordService;
+
+    @Autowired
+    private ActionRecordService userRecordService;
 
     @Override
     public PathNode createRootNode(Project project) {
@@ -43,13 +54,13 @@ public class PathNodeServiceImpl implements PathNodeService {
     @Override
     public PathNode createNode(PathNode parentNode, String name, NodeType nodeType) {
         if (parentNode == null) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         Integer parentNodeId = parentNode.getId();
         PathNode pathNode = PathNode.DAO.findNode(parentNodeId, name, nodeType);
         if (pathNode != null) {
-            throw new DuplicatedPathNode();
+            throw new DuplicatedPathNodeException();
         }
 
         pathNode = new PathNode();
@@ -57,7 +68,13 @@ public class PathNodeServiceImpl implements PathNodeService {
         pathNode.set("name", name);
         pathNode.set("parent", parentNodeId);
         pathNode.set("type", nodeType.name());
-        pathNode.save();
+        boolean success = pathNode.save();
+
+        if (success) {
+            ApiContext apiContext = ApiContext.get();
+            actionRecordService.record(new CreateNodeAction(apiContext.getAccessUser(), parentNode));
+        }
+
         return pathNode;
     }
 
@@ -70,16 +87,23 @@ public class PathNodeServiceImpl implements PathNodeService {
     @Override
     public PathNode rename(PathNode pathNode, String name) {
         if (pathNode == null || pathNode.isRootNode()) {
-            throw new PathNodeNotFound();
+            throw new PathNodeNotFoundException();
         }
 
         PathNode existNode = PathNode.DAO.findNode(pathNode.get("parent"), pathNode.get("name"), pathNode.getType());
         if (existNode != null && !existNode.getId().equals(pathNode.getId())) {
-            throw new DuplicatedPathNode();
+            throw new DuplicatedPathNodeException();
         }
 
         pathNode.set("name", name);
-        pathNode.update();
+        boolean success = pathNode.update();
+
+        if (success) {
+            // 记录行为
+            ApiContext apiContext = ApiContext.get();
+            userRecordService.record(new RenameNodeAction(apiContext.getAccessUser(), pathNode));
+        }
+
         return pathNode;
     }
 
@@ -112,7 +136,7 @@ public class PathNodeServiceImpl implements PathNodeService {
                     kv.set("parentNodeIds", dirIds);
                 }
                 // 只获取一级目录
-                else{
+                else {
                     System.out.println("bb");
                     kv.set("parentNodeId", condition.getParentNodeId());
                 }
