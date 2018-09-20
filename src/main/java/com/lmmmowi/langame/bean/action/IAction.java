@@ -7,7 +7,7 @@ import com.lmmmowi.langame.enums.ActionType;
  * @Date: 2018/9/20
  * @Description:
  */
-public interface IAction {
+public interface IAction<S, T> {
 
     String getProjectId();
 
@@ -16,5 +16,9 @@ public interface IAction {
     String getSubjectRef();
 
     String getTargetRef();
+
+    S getSubject();
+
+    T getTarget();
 
 }

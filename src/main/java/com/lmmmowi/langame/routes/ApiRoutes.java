@@ -21,6 +21,6 @@ public class ApiRoutes extends Routes {
         add("api/node", PathNodeApi.class);
         add("api/entry", LangEntryApi.class);
         add("api/member", MemberApi.class);
-        add("api/memrecords", UserRecordApi.class);
+        add("api/action", ActionRecordApi.class);
     }
 }

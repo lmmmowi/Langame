@@ -23,8 +23,9 @@ public class ModelMapping {
         arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
         arp.addSqlTemplate(getModelSql(PathNode.class));
         arp.addSqlTemplate(getModelSql(LangEntry.class));
+        arp.addSqlTemplate(getModelSql(ActionRecord.class));
 
-        arp.setShowSql(true);
+//        arp.setShowSql(true);
     }
 
     private static String getModelSql(Class<? extends BaseModel> modelClz) {

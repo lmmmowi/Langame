@@ -2,6 +2,7 @@ package com.lmmmowi.langame.service_impl;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.lmmmowi.langame.bean.action.CreateProjectAction;
+import com.lmmmowi.langame.enums.MemberRole;
 import com.lmmmowi.langame.model.Member;
 import com.lmmmowi.langame.model.Project;
 import com.lmmmowi.langame.model.User;
@@ -41,7 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
         boolean success = Db.tx(() -> {
             project.save();
             pathNodeService.createRootNode(project);
-            memberService.addMember(project.getId(), user.getId());
+            memberService.addMember(project.getId(), user, MemberRole.owner);
             return true;
         });
 

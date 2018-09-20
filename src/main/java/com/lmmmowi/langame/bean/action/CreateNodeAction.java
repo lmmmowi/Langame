@@ -24,4 +24,5 @@ public class CreateNodeAction extends BaseAction<User, PathNode> {
     public ActionType getActionType() {
         return ActionType.CREATE_NODE;
     }
+
 }

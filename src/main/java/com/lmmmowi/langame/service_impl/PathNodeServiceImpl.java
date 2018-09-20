@@ -5,6 +5,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.SqlPara;
 import com.lmmmowi.langame.bean.action.CreateNodeAction;
 import com.lmmmowi.langame.bean.action.RenameNodeAction;
+import com.lmmmowi.langame.cache.LgCache;
 import com.lmmmowi.langame.enums.NodeType;
 import com.lmmmowi.langame.exception.pathnode.DuplicatedPathNodeException;
 import com.lmmmowi.langame.exception.pathnode.PathNodeNotFoundException;
@@ -71,8 +72,10 @@ public class PathNodeServiceImpl implements PathNodeService {
         boolean success = pathNode.save();
 
         if (success) {
+            LgCache.use(pathNode.getProjectId()).refresh(LgCache.CACHE_COMPLETE_NODE_PATH);
+
             ApiContext apiContext = ApiContext.get();
-            actionRecordService.record(new CreateNodeAction(apiContext.getAccessUser(), parentNode));
+            actionRecordService.record(new CreateNodeAction(apiContext.getAccessUser(), pathNode));
         }
 
         return pathNode;
@@ -99,6 +102,8 @@ public class PathNodeServiceImpl implements PathNodeService {
         boolean success = pathNode.update();
 
         if (success) {
+            LgCache.use(pathNode.getProjectId()).refresh(LgCache.CACHE_COMPLETE_NODE_PATH);
+
             // 记录行为
             ApiContext apiContext = ApiContext.get();
             userRecordService.record(new RenameNodeAction(apiContext.getAccessUser(), pathNode));

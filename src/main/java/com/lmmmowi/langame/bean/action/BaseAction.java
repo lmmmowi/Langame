@@ -7,7 +7,7 @@ import com.lmmmowi.langame.common.BaseModel;
  * @Date: 2018/9/20
  * @Description:
  */
-public abstract class BaseAction<S, T> implements IAction {
+public abstract class BaseAction<S, T> implements IAction<S, T> {
 
     protected S subject;
     protected T target;
@@ -15,6 +15,16 @@ public abstract class BaseAction<S, T> implements IAction {
     public BaseAction(S subject, T target) {
         this.subject = subject;
         this.target = target;
+    }
+
+    @Override
+    public S getSubject() {
+        return subject;
+    }
+
+    @Override
+    public T getTarget() {
+        return target;
     }
 
     @Override
