@@ -59,4 +59,10 @@ public class PathNode extends BaseModel<PathNode> {
         return paginate(pageNumber, pageSize, "SELECT *", sql, nodeId);
     }
 
+    public int getAllEntry(String projectId) {
+        String sql = String.format("SELECT COUNT(*) FROM %s WHERE project=? AND type=?", getTable());
+        List<PathNode> nodes = find(sql, projectId, "entry");
+        return nodes.size();
+    }
+
 }

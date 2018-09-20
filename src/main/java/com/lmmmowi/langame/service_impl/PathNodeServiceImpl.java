@@ -154,4 +154,10 @@ public class PathNodeServiceImpl implements PathNodeService {
         }
         return true;
     }
+
+    @Override
+    public int getAllEntry(String projectId) {
+        return PathNode.DAO.getAllEntry(projectId);
+    }
+
 }

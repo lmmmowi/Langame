@@ -16,7 +16,7 @@ import java.util.List;
  * @Date: 2018/9/19
  * @Description:
  */
-public class MemberApi extends BaseApi{
+public class MemberApi extends BaseApi {
 
     @Autowired
     private MemberService memberService;
@@ -29,7 +29,7 @@ public class MemberApi extends BaseApi{
         int userId = getParaToInt("user_id");
         Member member = memberService.addMember(projectId, userId);
         User user = User.DAO.findById(userId);
-        userRecordService.addRecord(projectId, userId,UserRecordService.ADD_MEMBER,user.getStr("nickname"));
+        userRecordService.addRecord(projectId, userId, UserRecordService.ADD_MEMBER, user.getStr("nickname"));
         setAttr("member", member);
     }
 
@@ -37,17 +37,19 @@ public class MemberApi extends BaseApi{
         Integer pageSize = getParaToInt("page_size", 10);
         Integer pageNumber = getParaToInt("page_number", 1);
         String projectId = getPara("project_id");
-        Page<Member> members = memberService.getMemberList(projectId,pageSize, pageNumber);
+        Page<Member> members = memberService.getMemberList(projectId, pageSize, pageNumber);
         List<Member> list = members.getList();
-        List<User> users = new ArrayList<>();
-        list.forEach(mem->{
-            Integer userId = mem.getInt("user");
-            User user= User.DAO.findById(userId);
-            users.add(user);
-        });
-        setAttr("page_number", members.getPageNumber());
-        setAttr("total_size", members.getPageSize());
-        setAttr("total_page", members.getTotalPage());
-        setAttr("list", users);
+        if (list != null && !list.isEmpty()) {
+            List<User> users = new ArrayList<>();
+            list.forEach(mem -> {
+                Integer userId = mem.getInt("user");
+                User user = User.DAO.findById(userId);
+                users.add(user);
+            });
+            setAttr("page_number", members.getPageNumber());
+            setAttr("total_size", members.getPageSize());
+            setAttr("total_page", members.getTotalPage());
+            setAttr("list", users);
+        }
     }
 }
