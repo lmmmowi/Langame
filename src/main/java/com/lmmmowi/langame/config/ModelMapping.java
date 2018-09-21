@@ -21,6 +21,7 @@ public class ModelMapping {
         arp.addMapping("lg_action_record", "id", ActionRecord.class);
         arp.addMapping("lg_tag", "id", Tag.class);
         arp.addMapping("lg_tag_bind", "tag_id,object_type,object_ref", TagBind.class);
+        arp.addMapping("lg_export_setting", "id", ExportSetting.class);
 
         arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
         arp.addSqlTemplate(getModelSql(PathNode.class));

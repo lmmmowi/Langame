@@ -1,4 +1,4 @@
-package com.lmmmowi.langame.helper;
+package com.lmmmowi.langame.service_impl.helper;
 
 import java.util.Arrays;
 import java.util.List;

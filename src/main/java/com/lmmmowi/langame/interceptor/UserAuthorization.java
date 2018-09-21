@@ -7,7 +7,7 @@ import com.lmmmowi.langame.common.ApiHeaders;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.common.RequireSignin;
 import com.lmmmowi.langame.exception.user.RequireSigninException;
-import com.lmmmowi.langame.helper.UserTokenHelper;
+import com.lmmmowi.langame.service_impl.helper.UserTokenHelper;
 import com.lmmmowi.langame.model.User;
 
 /**

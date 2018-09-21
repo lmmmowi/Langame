@@ -9,7 +9,7 @@ import com.lmmmowi.langame.cache.LgCache;
 import com.lmmmowi.langame.enums.NodeType;
 import com.lmmmowi.langame.exception.pathnode.DuplicatedPathNodeException;
 import com.lmmmowi.langame.exception.pathnode.PathNodeNotFoundException;
-import com.lmmmowi.langame.helper.PathNodeHelper;
+import com.lmmmowi.langame.service_impl.helper.PathNodeHelper;
 import com.lmmmowi.langame.interceptor.ApiContext;
 import com.lmmmowi.langame.model.PathNode;
 import com.lmmmowi.langame.model.Project;
@@ -45,7 +45,7 @@ public class PathNodeServiceImpl implements PathNodeService {
     public PathNode createRootNode(Project project) {
         PathNode pathNode = new PathNode();
         pathNode.set("project", project.getId());
-        pathNode.set("name", "root");
+        pathNode.set("name", PathNode.ROOT_NODE_NAME);
         pathNode.set("parent", PathNode.ROOT_NODE_ID);
         pathNode.set("type", NodeType.path.name());
         pathNode.save();

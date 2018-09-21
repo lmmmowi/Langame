@@ -1,13 +1,13 @@
-package com.lmmmowi.langame.helper;
+package com.lmmmowi.langame.service_impl.helper;
 
 import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.SqlPara;
+import com.lmmmowi.langame.config.LangameConfig;
 import com.lmmmowi.langame.enums.NodeType;
 import com.lmmmowi.langame.model.PathNode;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Collectors;
 
 /**
  * @Author: mowi
@@ -47,6 +47,8 @@ public class PathNodeHelper {
     public static Map<Integer, String> getCompletePathMap(String projectId) {
         Map<Integer, String> pathMap = new HashMap<>();
 
+        String nodeConnector = LangameConfig.getInstance().getDefaultNodeConnector();
+
         List<PathNode> nodes = PathNode.DAO.findByProject(projectId);
         Map<Integer, List<PathNode>> parentReferenceMap = buildParentReferenceMap(nodes);
 
@@ -62,7 +64,7 @@ public class PathNodeHelper {
             for (PathNode child : children) {
                 String path = child.getStr("name");
                 if (!child.isRootNode()) {
-                    path = pathMap.get(parentNodeId) + "/" + path;
+                    path = pathMap.get(parentNodeId) + nodeConnector + path;
                 }
                 pathMap.put(child.getId(), path);
                 queue.add(child.getId());

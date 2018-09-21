@@ -2,7 +2,7 @@ package com.lmmmowi.langame.api;
 
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.common.RequireSignin;
-import com.lmmmowi.langame.helper.UserTokenHelper;
+import com.lmmmowi.langame.service_impl.helper.UserTokenHelper;
 import com.lmmmowi.langame.model.User;
 import com.lmmmowi.langame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

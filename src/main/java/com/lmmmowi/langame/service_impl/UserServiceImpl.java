@@ -4,7 +4,7 @@ import com.jfinal.kit.StrKit;
 import com.lmmmowi.langame.exception.user.EmailUsedException;
 import com.lmmmowi.langame.exception.user.InvalidPasswordException;
 import com.lmmmowi.langame.exception.user.UserNotFoundException;
-import com.lmmmowi.langame.helper.ResourceRandom;
+import com.lmmmowi.langame.service_impl.helper.ResourceRandom;
 import com.lmmmowi.langame.model.User;
 import com.lmmmowi.langame.service.UserService;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.lmmmowi.langame.cache;
 
-import com.lmmmowi.langame.helper.PathNodeHelper;
+import com.lmmmowi.langame.service_impl.helper.PathNodeHelper;
 
 import java.util.HashMap;
 import java.util.Map;

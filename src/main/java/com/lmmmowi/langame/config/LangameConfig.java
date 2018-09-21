@@ -27,4 +27,8 @@ public class LangameConfig {
     public void init() {
         properties = PropKit.use(ConfigFileName).getProperties();
     }
+
+    public String getDefaultNodeConnector(){
+        return "/";
+    }
 }

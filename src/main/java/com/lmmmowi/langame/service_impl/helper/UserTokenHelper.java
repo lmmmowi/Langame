@@ -1,4 +1,4 @@
-package com.lmmmowi.langame.helper;
+package com.lmmmowi.langame.service_impl.helper;
 
 import com.lmmmowi.langame.model.User;
 import io.jsonwebtoken.*;

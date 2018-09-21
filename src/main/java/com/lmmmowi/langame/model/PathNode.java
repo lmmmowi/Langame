@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class PathNode extends BaseModel<PathNode> {
 
+    public static final String ROOT_NODE_NAME = "root";
     public static final Integer ROOT_NODE_ID = 0;
 
     public static final PathNode DAO = new PathNode();
@@ -26,11 +27,11 @@ public class PathNode extends BaseModel<PathNode> {
         return ROOT_NODE_ID.equals(getInt("parent"));
     }
 
-    public String getProjectId(){
+    public String getProjectId() {
         return getStr("project");
     }
 
-    public NodeType getType(){
+    public NodeType getType() {
         return NodeType.valueOf(getStr("type"));
     }
 
@@ -42,6 +43,11 @@ public class PathNode extends BaseModel<PathNode> {
     public List<PathNode> findByParent(Integer nodeId) {
         String sql = String.format("SELECT * FROM %s WHERE parent=? ORDER BY type DESC, name", getTable());
         return find(sql, nodeId);
+    }
+
+    public PathNode findByParent(Integer nodeId, String nodeName) {
+        String sql = String.format("SELECT * FROM %s WHERE parent=? AND name=?", getTable());
+        return findFirst(sql, nodeId, nodeName);
     }
 
     public List<PathNode> findByProject(String projectId) {

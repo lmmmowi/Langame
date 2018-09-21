@@ -2,6 +2,7 @@ package com.lmmmowi.langame.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.plugin.activerecord.Page;
+import com.lmmmowi.langame.Importer;
 import com.lmmmowi.langame.cache.LgCache;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.enums.NodeType;
@@ -11,6 +12,7 @@ import com.lmmmowi.langame.service.PathNodeService;
 import com.lmmmowi.langame.vo.PathNodeQueryCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -120,4 +122,13 @@ public class PathNodeApi extends BaseApi {
         int allEntry = pathNodeService.getAllEntry(projectId);
         setAttr("entryCounts", allEntry);
     }
+
+//    public void test(){
+//        try{
+//            File file = new File("/Users/mowi/Desktop/temp.json");
+//            new Importer(file).run();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 }
