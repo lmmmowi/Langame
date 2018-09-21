@@ -36,6 +36,7 @@ public abstract class TemplateExporter implements IExporter {
         }
 
         this.beforeRender(items);
+
         return this.render(items);
     }
 
