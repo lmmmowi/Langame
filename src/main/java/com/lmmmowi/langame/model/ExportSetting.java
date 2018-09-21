@@ -2,6 +2,7 @@ package com.lmmmowi.langame.model;
 
 import com.alibaba.fastjson.JSON;
 import com.lmmmowi.langame.common.BaseModel;
+import com.lmmmowi.langame.service_impl.export.ExportType;
 
 import java.util.Map;
 
@@ -13,6 +14,10 @@ import java.util.Map;
 public class ExportSetting extends BaseModel<ExportSetting> {
 
     public static final ExportSetting DAO = new ExportSetting();
+
+    public ExportType getExportType(){
+        return ExportType.valueOf(getStr("export_type"));
+    }
 
     public String getNodeConnector(){
         return getStr("node_connector");

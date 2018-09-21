@@ -5,6 +5,7 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.FileResourceLoader;
+import org.beetl.core.resource.StringTemplateResourceLoader;
 
 /**
  * @Author: mowi
@@ -14,6 +15,18 @@ import org.beetl.core.resource.FileResourceLoader;
 public class TemplateLoader {
 
     public static final String CHARSET = "utf-8";
+
+    public static Template fromString(String templateValue) {
+        try {
+            StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
+            Configuration cfg = Configuration.defaultConfiguration();
+            GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
+            Template t = gt.getTemplate(templateValue);
+            return t;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public static Template fromFile(String root, String templateKey) {
         try {

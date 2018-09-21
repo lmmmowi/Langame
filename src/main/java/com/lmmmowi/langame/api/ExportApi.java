@@ -6,8 +6,8 @@ import com.lmmmowi.langame.enums.NodeType;
 import com.lmmmowi.langame.interceptor.ApiResultOutput;
 import com.lmmmowi.langame.model.ExportSetting;
 import com.lmmmowi.langame.model.PathNode;
+import com.lmmmowi.langame.service_impl.export.ExporterFactory;
 import com.lmmmowi.langame.service_impl.export.IExporter;
-import com.lmmmowi.langame.service_impl.export.JsonExporter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,10 +29,13 @@ public class ExportApi extends BaseApi {
 
         ExportSetting exportSetting = ExportSetting.DAO.findById(1);
 
-        IExporter exporter = new JsonExporter(exportSetting);
-        String result = exporter.export(pathNodes, language);
-
-        renderText(result);
+        IExporter exporter = ExporterFactory.getExporter(exportSetting);
+        if (exporter == null) {
+            renderError(404);
+        } else {
+            String result = exporter.export(pathNodes, language);
+            renderText(result);
+        }
     }
 
 }
