@@ -24,4 +24,5 @@ public class CreateProjectAction extends BaseAction<User, Project> {
     public ActionType getActionType() {
         return ActionType.CREATE_PROJECT;
     }
+
 }

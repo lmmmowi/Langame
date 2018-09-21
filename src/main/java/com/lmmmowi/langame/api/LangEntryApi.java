@@ -2,9 +2,10 @@ package com.lmmmowi.langame.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jfinal.kit.StrKit;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.model.LangEntry;
+import com.lmmmowi.langame.service.LangEntryService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,6 +16,9 @@ import java.util.stream.Collectors;
  * @Description:
  */
 public class LangEntryApi extends BaseApi {
+
+    @Autowired
+    LangEntryService langEntryService;
 
     public void update() {
         JSONArray entryArray = getParaToJSONArray("entries");
@@ -27,16 +31,7 @@ public class LangEntryApi extends BaseApi {
             return langEntry;
         }).collect(Collectors.toList());
 
-        for (LangEntry entry : entries) {
-            if (StrKit.isBlank(entry.getStr("content"))) {
-                entry.delete();
-            } else {
-                boolean ok = entry.update();
-                if (!ok) {
-                    entry.save();
-                }
-            }
-        }
+        langEntryService.update(entries);
     }
 
     public void getNodeEntries() {

@@ -16,6 +16,11 @@ public class LangEntry extends BaseModel<LangEntry> {
 
     public static final LangEntry DAO = new LangEntry();
 
+    @Override
+    public String getId() {
+        return String.format("%d,%s", getNodeId(), getLanguage());
+    }
+
     public Integer getNodeId() {
         return getInt("node");
     }

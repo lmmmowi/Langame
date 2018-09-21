@@ -22,6 +22,6 @@ public class DeleteTagAction extends BaseAction<User,Project>{
 
     @Override
     public ActionType getActionType() {
-        return ActionType.DELETE_LABEL;
+        return ActionType.DELETE_TAG;
     }
 }

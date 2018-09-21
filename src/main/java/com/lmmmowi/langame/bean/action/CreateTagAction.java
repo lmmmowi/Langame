@@ -22,6 +22,6 @@ public class CreateTagAction extends BaseAction<User, Project> {
 
     @Override
     public ActionType getActionType() {
-        return ActionType.CREATE_LABEL;
+        return ActionType.CREATE_TAG;
     }
 }

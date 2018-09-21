@@ -22,6 +22,6 @@ public class UpdateTagAction extends BaseAction<User,Project>{
 
     @Override
     public ActionType getActionType() {
-        return ActionType.UPDATE_LABEL;
+        return ActionType.UPDATE_TAG;
     }
 }
