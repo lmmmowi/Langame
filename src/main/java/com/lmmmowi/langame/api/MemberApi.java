@@ -7,9 +7,6 @@ import com.lmmmowi.langame.model.User;
 import com.lmmmowi.langame.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @Author: Braydenwong
  * @Date: 2018/9/19

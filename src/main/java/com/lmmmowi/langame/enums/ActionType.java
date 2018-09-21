@@ -15,6 +15,15 @@ public enum ActionType {
     RENAME_NODE,
 
     // 更新词条文案
-    UPDATE_LANG_ENTRY
+    UPDATE_LANG_ENTRY,
+
+    //新建标签
+    CREATE_LABEL,
+
+    //删除标签
+    DELETE_LABEL,
+
+    //更新标签
+    UPDATE_LABEL
 
 }

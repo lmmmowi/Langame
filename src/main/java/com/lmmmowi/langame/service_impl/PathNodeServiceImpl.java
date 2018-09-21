@@ -14,6 +14,7 @@ import com.lmmmowi.langame.model.PathNode;
 import com.lmmmowi.langame.model.Project;
 import com.lmmmowi.langame.service.ActionRecordService;
 import com.lmmmowi.langame.service.PathNodeService;
+import com.lmmmowi.langame.service.TagService;
 import com.lmmmowi.langame.vo.PathNodeQueryCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,16 @@ import java.util.List;
 @Service
 public class PathNodeServiceImpl implements PathNodeService {
 
+    private static final String ENTRY = "entry";
+
     @Autowired
     ActionRecordService actionRecordService;
 
     @Autowired
     private ActionRecordService userRecordService;
+
+    @Autowired
+    private TagService tagService;
 
     @Override
     public PathNode createRootNode(Project project) {
@@ -53,28 +59,29 @@ public class PathNodeServiceImpl implements PathNodeService {
 
     @Override
     public PathNode createNode(PathNode parentNode, String name, NodeType nodeType) {
+        PathNode pathNode = this.thisCreateNode(parentNode, name, nodeType);
+        boolean success = pathNode.save();
+        if (success) {
+            ApiContext apiContext = ApiContext.get();
+            actionRecordService.record(new CreateNodeAction(apiContext.getAccessUser(), parentNode));
+        }
+        return pathNode;
+    }
+
+    private PathNode thisCreateNode(PathNode parentNode, String name, NodeType nodeType) {
         if (parentNode == null) {
             throw new PathNodeNotFoundException();
         }
-
         Integer parentNodeId = parentNode.getId();
         PathNode pathNode = PathNode.DAO.findNode(parentNodeId, name, nodeType);
         if (pathNode != null) {
             throw new DuplicatedPathNodeException();
         }
-
         pathNode = new PathNode();
         pathNode.set("project", parentNode.getStr("project"));
         pathNode.set("name", name);
         pathNode.set("parent", parentNodeId);
         pathNode.set("type", nodeType.name());
-        boolean success = pathNode.save();
-
-        if (success) {
-            ApiContext apiContext = ApiContext.get();
-            actionRecordService.record(new CreateNodeAction(apiContext.getAccessUser(), parentNode));
-        }
-
         return pathNode;
     }
 

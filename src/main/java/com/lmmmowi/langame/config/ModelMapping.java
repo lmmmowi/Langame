@@ -19,6 +19,8 @@ public class ModelMapping {
         arp.addMapping("lg_path_node", "id", PathNode.class);
         arp.addMapping("lg_lang_entry", "node,language", LangEntry.class);
         arp.addMapping("lg_action_record", "id", ActionRecord.class);
+        arp.addMapping("lg_tag", "id", Tag.class);
+        arp.addMapping("lg_tag_bind", "tag_id,object_type,object_ref", TagBind.class);
 
         arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
         arp.addSqlTemplate(getModelSql(PathNode.class));
