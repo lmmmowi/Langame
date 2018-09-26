@@ -5,11 +5,9 @@ import com.lmmmowi.langame.bean.action.CreateTagAction;
 import com.lmmmowi.langame.bean.action.DeleteTagAction;
 import com.lmmmowi.langame.bean.action.UpdateTagAction;
 import com.lmmmowi.langame.common.BaseApi;
+import com.lmmmowi.langame.enums.TagObjectType;
 import com.lmmmowi.langame.exception.label.TagNotFoundException;
-import com.lmmmowi.langame.model.Project;
-import com.lmmmowi.langame.model.Tag;
-import com.lmmmowi.langame.model.TagBind;
-import com.lmmmowi.langame.model.User;
+import com.lmmmowi.langame.model.*;
 import com.lmmmowi.langame.service.ActionRecordService;
 import com.lmmmowi.langame.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,5 +101,34 @@ public class TagApi extends BaseApi {
             tags.add(tag);
         });
         setAttr("tags", tags);
+    }
+
+    public void getObjByTag() {
+        Integer tagId = getParaToInt("tag_id");
+        List<TagBind> tagBinds = TagBind.DAO.getByTag(tagId);
+        List<PathNode> pathNodeList = new ArrayList<>();
+        List<Project> projectList = new ArrayList<>();
+        //遍历每一个tag(tagId相同，type不同)
+        tagBinds.forEach(tagBind -> {
+            String objectType = tagBind.getStr("object_type");
+            TagObjectType tagObjectType = TagObjectType.parse(objectType);
+            String objectRef = tagBind.getStr("object_ref");
+            if (tagObjectType != null) {
+                switch (tagObjectType) {
+                    case node:
+                        PathNode pathNode = PathNode.DAO.findById(objectRef);
+                        pathNodeList.add(pathNode);
+                        break;
+                    case project:
+                        Project project = Project.DAO.findById(objectRef);
+                        projectList.add(project);
+                        break;
+                    default:
+                        System.out.println("未匹配");
+                }
+            }
+        });
+        setAttr("pathNodeList", pathNodeList);
+        setAttr("projectList", projectList);
     }
 }
