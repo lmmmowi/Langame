@@ -10,3 +10,7 @@ target/
 
 # Private Files
 profile-*.properties
+
+# Local Files
+web/upload
+web/export

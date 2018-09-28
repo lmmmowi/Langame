@@ -1,4 +1,4 @@
-package com.lmmmowi.langame.service_impl.export;
+package com.lmmmowi.langame.service_impl.exports;
 
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;

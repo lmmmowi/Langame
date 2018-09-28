@@ -63,8 +63,10 @@ public class ActionParser {
         String[] arr = actionRecord.getTarget().split(",");
         Integer nodeId = Integer.valueOf(arr[0]);
         PathNode pathNode = PathNode.DAO.findById(nodeId);
-        Map<Integer, String> completePathMap = LgCache.use(pathNode.getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
-        pathNode.set("complete_path", completePathMap.get(pathNode.getId()));
+        if (pathNode != null) {
+            Map<Integer, String> completePathMap = LgCache.use(pathNode.getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
+            pathNode.set("complete_path", completePathMap.get(pathNode.getId()));
+        }
 
         LangEntry langEntry = new LangEntry();
         langEntry.set("node", pathNode);

@@ -1,9 +1,11 @@
 package com.lmmmowi.langame.model;
 
 import com.alibaba.fastjson.JSON;
+import com.jfinal.kit.StrKit;
 import com.lmmmowi.langame.common.BaseModel;
-import com.lmmmowi.langame.service_impl.export.ExportType;
+import com.lmmmowi.langame.service_impl.exports.ExportType;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,11 +17,23 @@ public class ExportSetting extends BaseModel<ExportSetting> {
 
     public static final ExportSetting DAO = new ExportSetting();
 
-    public ExportType getExportType(){
+    public ExportType getExportType() {
         return ExportType.valueOf(getStr("export_type"));
     }
 
-    public String getNodeConnector(){
+    public String getFilenameExtension() {
+        String s = getStr("filename_extension");
+        if (StrKit.isBlank(s)) {
+            s = getExportType().getDefaultExtension();
+        }
+        return s;
+    }
+
+    public Map<String, String> getFilenameMapping() {
+        return getMap("filename_mapping");
+    }
+
+    public String getNodeConnector() {
         return getStr("node_connector");
     }
 
@@ -37,5 +51,10 @@ public class ExportSetting extends BaseModel<ExportSetting> {
             return null;
         }
         return (Map<String, String>) JSON.parse(s);
+    }
+
+    public List<ExportSetting> findByProject(String projectId) {
+        String sql = String.format("SELECT * FROM %s WHERE project=? ORDER BY id", getTable());
+        return find(sql, projectId);
     }
 }

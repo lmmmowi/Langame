@@ -1,7 +1,9 @@
 package com.lmmmowi.langame.config;
 
+import com.jfinal.kit.PathKit;
 import com.jfinal.kit.PropKit;
 
+import java.io.File;
 import java.util.Properties;
 
 /**
@@ -30,5 +32,9 @@ public class LangameConfig {
 
     public String getDefaultNodeConnector(){
         return "/";
+    }
+
+    public File getExportDir(){
+        return new File(PathKit.getWebRootPath() + "/export/");
     }
 }

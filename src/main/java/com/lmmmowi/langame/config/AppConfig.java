@@ -4,7 +4,9 @@ import com.jfinal.config.*;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
+import com.lmmmowi.langame.cron.ExportTaskRunner;
 import com.lmmmowi.langame.interceptor.*;
+import com.lmmmowi.langame.plugin.cron.CronPlugin;
 import com.lmmmowi.langame.plugin.spring.IocInterceptor;
 import com.lmmmowi.langame.plugin.spring.SpringPlugin;
 import com.lmmmowi.langame.routes.ApiRoutes;
@@ -54,12 +56,17 @@ public class AppConfig extends JFinalConfig {
         ActiveRecordPlugin activeRecordPlugin = new ActiveRecordPlugin("langame", druidPlugin);
         ModelMapping.doMapping(activeRecordPlugin);
         plugins.add(activeRecordPlugin);
+
+        CronPlugin cronPlugin = new CronPlugin();
+        cronPlugin.addCron(ExportTaskRunner.class, 5);
+        plugins.add(cronPlugin);
     }
 
     @Override
     public void configInterceptor(Interceptors interceptors) {
         interceptors.addGlobalActionInterceptor(new CrossDomain());
         interceptors.addGlobalActionInterceptor(new HttpOptionsMethodFilter());
+        interceptors.addGlobalActionInterceptor(new BaseUrlInterceptor());
         interceptors.addGlobalActionInterceptor(new ApiContextInitializer());
         interceptors.addGlobalActionInterceptor(new ApiResultOutput());
         interceptors.addGlobalActionInterceptor(new UserAuthorization());

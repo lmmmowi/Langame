@@ -63,7 +63,8 @@ public class BaseApi extends Controller {
 
     @Override
     public String getPara(String name, String defaultValue) {
-        if ("GET".equals(getRequest().getMethod().toUpperCase())) {
+        if ("GET".equals(getRequest().getMethod().toUpperCase())
+                || getHeader("content-type").contains("multipart/form-data")) {
             return super.getPara(name, defaultValue);
         } else {
             String s = getInputJson().getString(name);

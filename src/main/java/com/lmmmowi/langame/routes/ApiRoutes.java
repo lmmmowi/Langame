@@ -24,5 +24,6 @@ public class ApiRoutes extends Routes {
         add("api/tag", TagApi.class);
         add("api/action", ActionRecordApi.class);
         add("api/export", ExportApi.class);
+        add("api/import", ImportApi.class);
     }
 }

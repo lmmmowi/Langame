@@ -26,6 +26,7 @@ public class TagApi extends BaseApi {
 
     @Autowired
     private TagService tagService;
+
     @Autowired
     private ActionRecordService actionRecordService;
 

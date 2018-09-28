@@ -1,5 +1,6 @@
 package com.lmmmowi.langame.common;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.SqlPara;
 
@@ -18,6 +19,10 @@ public class BaseModel<M extends BaseModel> extends Model<M> {
 
     public <T> T getId() {
         return get("id");
+    }
+
+    public JSONObject getJSONObject(String attr){
+        return JSONObject.parseObject(getStr(attr));
     }
 
     public SqlPara getModelSqlPara(String key, Map data) {

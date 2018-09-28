@@ -1,4 +1,4 @@
-package com.lmmmowi.langame.service_impl.export;
+package com.lmmmowi.langame.service_impl.exports;
 
 import com.lmmmowi.langame.model.ExportSetting;
 
@@ -15,7 +15,11 @@ public class ExporterFactory {
             switch (exportType) {
                 case json:
                     return new JsonExporter(exportSetting);
-                case diy:
+                case android:
+                    return new AndroidResourceExporter(exportSetting);
+                case properties:
+                    return new PropertiesExporter(exportSetting);
+                case custom:
                     return new DiyExporter(exportSetting);
                 default:
                     return null;
