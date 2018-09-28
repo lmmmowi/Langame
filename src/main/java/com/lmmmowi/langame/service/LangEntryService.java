@@ -1,6 +1,8 @@
 package com.lmmmowi.langame.service;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.lmmmowi.langame.model.LangEntry;
+import com.lmmmowi.langame.vo.LangEntryQueryCondition;
 
 import java.util.List;
 
@@ -12,5 +14,7 @@ import java.util.List;
 public interface LangEntryService {
 
     void update(List<LangEntry> entries);
+
+    Page<LangEntry> getEntriesByQuery(LangEntryQueryCondition langEntryQueryCondition, Integer pageNumber, Integer pageSize);
 
 }

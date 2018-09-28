@@ -127,8 +127,7 @@ public class PathNodeServiceImpl implements PathNodeService {
         if (condition.getNodeId() != null) {
             PathNode pathNode = PathNode.DAO.findById(condition.getNodeId());
             if (pathNode != null) {
-                String projectId = pathNode.getStr("project");
-                kv.set("nodeId", condition.getNodeId()).set("projectId", projectId);
+                kv.set("nodeId", condition.getNodeId());
             }
         }
 

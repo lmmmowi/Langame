@@ -2,9 +2,12 @@ package com.lmmmowi.langame.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.plugin.activerecord.Page;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.model.LangEntry;
+import com.lmmmowi.langame.model.TagBind;
 import com.lmmmowi.langame.service.LangEntryService;
+import com.lmmmowi.langame.vo.LangEntryQueryCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -50,6 +53,24 @@ public class LangEntryApi extends BaseApi {
             List<LangEntry> entries = LangEntry.DAO.findByNode(nodeIds, language);
             setLangEntriesAttr(entries);
         }
+    }
+
+    public void getEntriesByQuery() {
+        Integer pageNumber = getParaToInt("page_number", 1);
+        Integer pageSize = getParaToInt("page_size", 10);
+
+        Integer tagId = getParaToInt("tag_id");
+        List<TagBind> tagBinds = TagBind.DAO.getByTag(tagId);
+        List<Integer> nodeIds = new ArrayList<>();
+        LangEntryQueryCondition langEntryQueryCondition = new LangEntryQueryCondition();
+        langEntryQueryCondition.setBeginTime(getPara("beginTime"));
+        langEntryQueryCondition.setContent(getPara("content"));
+        langEntryQueryCondition.setEndTime(getPara("endTime"));
+        langEntryQueryCondition.setLanguage(getPara("language"));
+        tagBinds.forEach(t-> nodeIds.add(Integer.valueOf(t.getStr("object_ref"))));
+        langEntryQueryCondition.setNodeIds(nodeIds);
+        Page<LangEntry> langEntryList = langEntryService.getEntriesByQuery(langEntryQueryCondition,pageNumber,pageSize);
+        setPageAttr(langEntryList);
     }
 
     private void setLangEntriesAttr(List<LangEntry> entries) {
