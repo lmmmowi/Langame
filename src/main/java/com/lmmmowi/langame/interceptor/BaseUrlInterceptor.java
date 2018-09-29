@@ -7,7 +7,7 @@ import com.jfinal.kit.StrKit;
 /**
  * @Author: mowi
  * @Date: 2018/8/18
- * @Description: 
+ * @Description:
  */
 public class BaseUrlInterceptor implements Interceptor {
 
@@ -17,32 +17,28 @@ public class BaseUrlInterceptor implements Interceptor {
         return baseUrlThreadLocal.get();
     }
 
-    private boolean useHttps;
+    private String proxy;
 
-    public BaseUrlInterceptor() {
-        this(false);
-    }
-
-    public BaseUrlInterceptor(boolean userHttps) {
-        this.useHttps = userHttps;
+    public BaseUrlInterceptor(String proxy) {
+        this.proxy = proxy;
     }
 
     @Override
     public void intercept(Invocation invocation) {
-        String actionKey = invocation.getActionKey();
-        String url = invocation.getController().getRequest().getRequestURL().toString();
-        if (StrKit.notBlank(url)) {
-            // ActionForward时可能为-1，不重新设置BaseUrl
-            int index = url.indexOf(actionKey);
-            if (index >= 0) {
-                String baseUrl = url.substring(0, index);
+        if (StrKit.isBlank(proxy)) {
+            String actionKey = invocation.getActionKey();
+            String url = invocation.getController().getRequest().getRequestURL().toString();
+            if (StrKit.notBlank(url)) {
+                // ActionForward时可能为-1，不重新设置BaseUrl
+                int index = url.indexOf(actionKey);
+                if (index >= 0) {
+                    String baseUrl = url.substring(0, index);
 
-                if (useHttps) {
-                    baseUrl = baseUrl.replace("http://", "https://");
+                    baseUrlThreadLocal.set(baseUrl);
                 }
-
-                baseUrlThreadLocal.set(baseUrl);
             }
+        } else {
+            baseUrlThreadLocal.set(proxy);
         }
 
         try {

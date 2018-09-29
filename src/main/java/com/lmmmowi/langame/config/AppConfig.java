@@ -66,7 +66,7 @@ public class AppConfig extends JFinalConfig {
     public void configInterceptor(Interceptors interceptors) {
         interceptors.addGlobalActionInterceptor(new CrossDomain());
         interceptors.addGlobalActionInterceptor(new HttpOptionsMethodFilter());
-        interceptors.addGlobalActionInterceptor(new BaseUrlInterceptor());
+        interceptors.addGlobalActionInterceptor(new BaseUrlInterceptor(getProperty("proxy")));
         interceptors.addGlobalActionInterceptor(new ApiContextInitializer());
         interceptors.addGlobalActionInterceptor(new ApiResultOutput());
         interceptors.addGlobalActionInterceptor(new UserAuthorization());
