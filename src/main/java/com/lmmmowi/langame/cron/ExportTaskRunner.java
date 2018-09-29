@@ -90,7 +90,7 @@ public class ExportTaskRunner implements Runnable {
                 result = "";
             }
 
-            String filename = filenameMapping == null || filenameMapping.get(language) == null ? language : filenameMapping.get(language);
+            String filename = filenameMapping == null || StrKit.isBlank(filenameMapping.get(language)) ? language : filenameMapping.get(language);
             File outputFile = new File(outputDir, String.format("%d/%s%s", executionTask.getId(), filename, pathSuffix));
             FileKit.writeContent(outputFile, result);
         }

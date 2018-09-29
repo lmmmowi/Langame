@@ -114,6 +114,10 @@ public class ExportApi extends BaseApi {
         File resultDir = new File(LangameConfig.getInstance().getExportDir(), exportTask.getId().toString());
 
         File[] files = resultDir.listFiles((file, name) -> !name.startsWith("."));
+        if (files == null) {
+            files = new File[0];
+        }
+
         List<Record> result = Arrays.stream(files).map(file -> {
             Record record = new Record();
             record.set("name", file.getName());
