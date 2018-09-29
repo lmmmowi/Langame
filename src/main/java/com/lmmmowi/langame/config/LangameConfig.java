@@ -2,6 +2,7 @@ package com.lmmmowi.langame.config;
 
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.PropKit;
+import com.jfinal.kit.StrKit;
 
 import java.io.File;
 import java.util.Properties;
@@ -30,11 +31,24 @@ public class LangameConfig {
         properties = PropKit.use(ConfigFileName).getProperties();
     }
 
-    public String getDefaultNodeConnector(){
+    public String getDefaultNodeConnector() {
         return "/";
     }
 
-    public File getExportDir(){
-        return new File(PathKit.getWebRootPath() + "/export/");
+    public File getExportDir() {
+        String configExportDir = properties.getProperty("export_dir");
+        if (StrKit.notBlank(configExportDir)) {
+            return new File(configExportDir);
+        } else {
+            return new File(PathKit.getWebRootPath() + "/export/");
+        }
+    }
+
+    public String getExportFileBaseUrl() {
+        String url = properties.getProperty("export_file_base_url");
+        if (StrKit.notBlank(url) && !url.endsWith("/")) {
+            url += "/";
+        }
+        return url;
     }
 }

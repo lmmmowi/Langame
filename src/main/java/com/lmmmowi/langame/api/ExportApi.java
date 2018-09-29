@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
 import com.jfinal.kit.PathKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.config.LangameConfig;
@@ -118,14 +119,30 @@ public class ExportApi extends BaseApi {
             files = new File[0];
         }
 
+        String exportFileBaseUrl = LangameConfig.getInstance().getExportFileBaseUrl();
+        String baseUrl = StrKit.notBlank(exportFileBaseUrl) ? exportFileBaseUrl : BaseUrlInterceptor.get() + "/api/export/getExportFile?path=";
+
         List<Record> result = Arrays.stream(files).map(file -> {
+            String fileKey = exportTask.getId() + "/" + file.getName();
+
             Record record = new Record();
             record.set("name", file.getName());
-            record.set("url", BaseUrlInterceptor.get() + file.getAbsolutePath().replace(PathKit.getWebRootPath(), ""));
+            record.set("key", fileKey);
+            record.set("url", baseUrl + fileKey);
             return record;
         }).collect(Collectors.toList());
 
         setAttr("files", result);
+    }
+
+    @Clear(ApiResultOutput.class)
+    public void getExportFile() {
+        File file = new File(LangameConfig.getInstance().getExportDir(), getPara("path"));
+        if (file.exists()) {
+            renderFile(file);
+        } else {
+            renderError(404);
+        }
     }
 
     @Clear(ApiResultOutput.class)
