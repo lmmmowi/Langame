@@ -1,6 +1,5 @@
 package com.lmmmowi.langame.service;
 
-import com.jfinal.plugin.activerecord.Page;
 import com.lmmmowi.langame.model.Tag;
 
 /**
@@ -10,5 +9,7 @@ import com.lmmmowi.langame.model.Tag;
  */
 public interface TagService {
 
-    Page<Tag> getAllLabel(String projectId, Integer pageSize, Integer pageNumber);
+    Tag createTag(String projectId, String tagName);
+
+    Tag updateTag(Integer tagId, String tagName);
 }

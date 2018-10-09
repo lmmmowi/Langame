@@ -127,6 +127,7 @@ public class PathNodeServiceImpl implements PathNodeService {
         if (condition.getNodeId() != null) {
             PathNode pathNode = PathNode.DAO.findById(condition.getNodeId());
             if (pathNode != null) {
+                kv.set("projectId", pathNode.getProjectId());
                 kv.set("nodeId", condition.getNodeId());
             }
         }
@@ -135,19 +136,15 @@ public class PathNodeServiceImpl implements PathNodeService {
         if (condition.getParentNodeId() != null) {
             PathNode pathNode = PathNode.DAO.findById(condition.getParentNodeId());
             if (pathNode != null) {
-                String projectId = pathNode.getStr("project");
-                kv.set("projectId", projectId);
+                kv.set("projectId", pathNode.getProjectId());
 
                 // 递归
                 if (condition.isRecursion()) {
-                    System.out.println("aa");
                     List<Integer> dirIds = PathNodeHelper.getRecursionPath(pathNode);
-                    System.out.println(dirIds);
                     kv.set("parentNodeIds", dirIds);
                 }
                 // 只获取一级目录
                 else {
-                    System.out.println("bb");
                     kv.set("parentNodeId", condition.getParentNodeId());
                 }
             }

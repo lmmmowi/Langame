@@ -1,4 +1,4 @@
-package com.lmmmowi.langame.exception.label;
+package com.lmmmowi.langame.exception.tag;
 
 import com.lmmmowi.langame.exception.LangameException;
 
@@ -7,9 +7,9 @@ import com.lmmmowi.langame.exception.LangameException;
  * @Date: 2018/9/20
  * @Description:
  */
-public class TagNotFoundException extends LangameException{
+public class TagNotFound extends LangameException{
     @Override
     public int getCode() {
-        return 3001;
+        return 5000;
     }
 }

@@ -19,12 +19,6 @@ public enum ActionType {
     //新建标签
     CREATE_TAG(CreateTagAction.class),
 
-    //删除标签
-    DELETE_TAG(DeleteTagAction.class),
-
-    //更新标签
-    UPDATE_TAG(UpdateTagAction.class),
-
     // 更新词条文案
     UPDATE_LANG_ENTRY(UpdateLangEntryAction.class);
 
