@@ -1,16 +1,13 @@
 package com.lmmmowi.langame.service_impl.exports;
 
-import com.jfinal.kit.StrKit;
-import com.lmmmowi.langame.cache.LgCache;
-import com.lmmmowi.langame.config.LangameConfig;
 import com.lmmmowi.langame.model.ExportSetting;
 import com.lmmmowi.langame.model.LangEntry;
 import com.lmmmowi.langame.model.PathNode;
+import com.lmmmowi.langame.service_impl.helper.ExportRenderer;
 import org.beetl.core.Template;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -20,12 +17,12 @@ import java.util.stream.Collectors;
  */
 public abstract class TemplateExporter implements IExporter {
 
-    private static final String DEFAULT_NODE_CONNECTOR = LangameConfig.getInstance().getDefaultNodeConnector();
-
     protected ExportSetting exportSetting;
+    protected ExportRenderer exportRenderer;
 
     public TemplateExporter(ExportSetting exportSetting) {
         this.exportSetting = exportSetting;
+        this.exportRenderer = new ExportRenderer(exportSetting);
     }
 
     @Override
@@ -45,55 +42,26 @@ public abstract class TemplateExporter implements IExporter {
             return null;
         }
 
-        String projectId = pathNodes.get(0).getProjectId();
         List<Integer> nodeIds = pathNodes.stream().map(o -> o.getId()).collect(Collectors.toList());
-        List<LangEntry> entries = LangEntry.DAO.findByNode(nodeIds, language);
+        List<LangEntry> entries = LangEntry.DAO.query(nodeIds, language);
+        Map<Integer, LangEntry> entryMap = entries.stream().collect(Collectors.toMap(o -> o.getNodeId(), o -> o));
 
-        Map<Integer, String> completePathMap = LgCache.use(projectId).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
+        List<EntryExportItem> items = pathNodes.stream().map(pathNode -> {
+            String key = exportRenderer.renderKey(pathNode.getId());
 
-        List<EntryExportItem> items = entries.stream().map(entry -> {
-            // 去除根节点
-            String key = completePathMap.get(entry.getNodeId()).substring(PathNode.ROOT_NODE_NAME.length() + 1);
+            LangEntry entry = entryMap.get(pathNode.getId());
+            String content = exportRenderer.renderContent(entry);
 
             EntryExportItem item = new EntryExportItem();
             item.setKey(key);
-            item.setContent(entry.getStr("content"));
+            item.setContent(content);
             return item;
         }).collect(Collectors.toList());
+
         return items;
     }
 
     protected void beforeRender(List<EntryExportItem> items) {
-        String nodeConnector = exportSetting.getNodeConnector();
-        if (StrKit.notBlank(nodeConnector)) {
-            items.forEach(item -> item.setKey(item.getKey().replace(DEFAULT_NODE_CONNECTOR, nodeConnector)));
-        }
-
-        Map<String, String> keyReplaceMap = exportSetting.getKeyReplaceMap();
-        if (keyReplaceMap != null) {
-            items.forEach(item -> {
-                Set<String> mapKeys = keyReplaceMap.keySet();
-                String key = item.getKey();
-                for (String mapKey : mapKeys) {
-                    String mapValue = keyReplaceMap.get(mapKey);
-                    key = key.replace(mapKey, mapValue);
-                }
-                item.setKey(key);
-            });
-        }
-
-        Map<String, String> valueReplaceMap = exportSetting.getValueReplaceMap();
-        if (valueReplaceMap != null) {
-            items.forEach(item -> {
-                Set<String> mapKeys = valueReplaceMap.keySet();
-                String content = item.getContent();
-                for (String mapKey : mapKeys) {
-                    String mapValue = valueReplaceMap.get(mapKey);
-                    content = content.replace(mapKey, mapValue);
-                }
-                item.setContent(content);
-            });
-        }
     }
 
     protected String render(List<EntryExportItem> items) {

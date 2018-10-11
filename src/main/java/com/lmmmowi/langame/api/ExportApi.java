@@ -43,8 +43,12 @@ public class ExportApi extends BaseApi {
         String projectId = getPara("project_id");
         JSONObject filenameMapping = getParaToJSONObject("filename_mapping");
 
+        List<ExportSetting> exportSettings = ExportSetting.DAO.findByProject(projectId);
+        boolean isDefault = exportSettings.size() == 0;
+
         ExportSetting exportSetting = new ExportSetting();
         exportSetting.set("project", projectId);
+        exportSetting.set("is_default", isDefault);
         exportSetting.set("name", getPara("name"));
         exportSetting.set("export_type", getPara("export_type"));
         exportSetting.set("template", getPara("template"));

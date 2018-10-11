@@ -29,14 +29,20 @@ public class LangEntry extends BaseModel<LangEntry> {
         return getStr("language");
     }
 
-    public List<LangEntry> findByNode(Integer nodeId, String language) {
+    public List<LangEntry> findByNode(Integer nodeId){
+        Kv kv = Kv.by("nodeIds", Arrays.asList(nodeId));
+        SqlPara sqlPara = getModelSqlPara("query", kv);
+        return find(sqlPara);
+    }
+
+    public List<LangEntry> query(Integer nodeId, String language) {
         Kv kv = Kv.by("nodeIds", Arrays.asList(nodeId))
                 .set("language", language);
         SqlPara sqlPara = getModelSqlPara("query", kv);
         return find(sqlPara);
     }
 
-    public List<LangEntry> findByNode(List<Integer> nodeIds, String language) {
+    public List<LangEntry> query(List<Integer> nodeIds, String language) {
         Kv kv = Kv.by("nodeIds", nodeIds)
                 .set("language", language);
         SqlPara sqlPara = getModelSqlPara("query", kv);

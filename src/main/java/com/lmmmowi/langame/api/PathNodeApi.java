@@ -6,8 +6,10 @@ import com.lmmmowi.langame.cache.LgCache;
 import com.lmmmowi.langame.common.BaseApi;
 import com.lmmmowi.langame.enums.NodeType;
 import com.lmmmowi.langame.exception.pathnode.PathNodeNotFoundException;
+import com.lmmmowi.langame.model.ExportSetting;
 import com.lmmmowi.langame.model.PathNode;
 import com.lmmmowi.langame.service.PathNodeService;
+import com.lmmmowi.langame.service_impl.helper.ExportRenderer;
 import com.lmmmowi.langame.vo.PathNodeQueryCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -108,8 +110,16 @@ public class PathNodeApi extends BaseApi {
 
         List<PathNode> pathNodes = pathNodePage.getList();
         if (pathNodes != null && !pathNodes.isEmpty()) {
-            Map<Integer, String> completePathMap = LgCache.use(pathNodes.get(0).getProjectId()).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
-            pathNodes.forEach(node -> node.set("complete_path", completePathMap.get(node.getId())));
+            String projectId = pathNodes.get(0).getProjectId();
+            ExportSetting exportSetting = ExportSetting.DAO.findDefaultByProject(projectId);
+
+            Map<Integer, String> completePathMap = LgCache.use(projectId).getCache(LgCache.CACHE_COMPLETE_NODE_PATH);
+            ExportRenderer exportRenderer = exportSetting == null ? new ExportRenderer(projectId) : new ExportRenderer(exportSetting);
+
+            pathNodes.forEach(node -> {
+                node.set("key", exportRenderer.renderKey(node.getId()));
+                node.set("complete_path", completePathMap.get(node.getId()));
+            });
         }
 
         setPageAttr(pathNodePage);

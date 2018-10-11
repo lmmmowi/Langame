@@ -37,6 +37,12 @@ public class LangEntryApi extends BaseApi {
         langEntryService.update(entries);
     }
 
+    public void getByNode(){
+        Integer nodeId = getParaToInt("node");
+        List<LangEntry> entries = LangEntry.DAO.findByNode(nodeId);
+        setLangEntriesAttr(entries);
+    }
+
     public void getNodeEntries() {
         String language = getPara("language");
 
@@ -50,7 +56,7 @@ public class LangEntryApi extends BaseApi {
         }
 
         if (nodeIds != null) {
-            List<LangEntry> entries = LangEntry.DAO.findByNode(nodeIds, language);
+            List<LangEntry> entries = LangEntry.DAO.query(nodeIds, language);
             setLangEntriesAttr(entries);
         }
     }

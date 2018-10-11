@@ -17,6 +17,10 @@ public class ExportSetting extends BaseModel<ExportSetting> {
 
     public static final ExportSetting DAO = new ExportSetting();
 
+    public String getProjectId(){
+        return getStr("project");
+    }
+
     public ExportType getExportType() {
         return ExportType.valueOf(getStr("export_type"));
     }
@@ -51,6 +55,11 @@ public class ExportSetting extends BaseModel<ExportSetting> {
             return null;
         }
         return (Map<String, String>) JSON.parse(s);
+    }
+
+    public ExportSetting findDefaultByProject(String projectId) {
+        String sql = String.format("SELECT * FROM %s WHERE project=? AND is_default=?", getTable());
+        return findFirst(sql, projectId, true);
     }
 
     public List<ExportSetting> findByProject(String projectId) {
